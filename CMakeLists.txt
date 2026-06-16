@@ -17,10 +17,15 @@ option(TRACY_MCP_PORTABLE "Use a portable ISA baseline for distributable binarie
 if(MSVC)
     add_compile_options(/arch:AVX2)
 else()
+    include(CheckCXXCompilerFlag)
     if(TRACY_MCP_PORTABLE)
-        add_compile_options(-march=x86-64-v3)
+        # x86-64-v3 is x86-only; on arm64 (e.g. macos-latest) clang rejects it and
+        # the x86 intrinsics aren't compiled anyway, so skip when unsupported.
+        check_cxx_compiler_flag("-march=x86-64-v3" HAS_MARCH_V3)
+        if(HAS_MARCH_V3)
+            add_compile_options(-march=x86-64-v3)
+        endif()
     else()
-        include(CheckCXXCompilerFlag)
         check_cxx_compiler_flag("-march=native" HAS_MARCH_NATIVE)
         if(HAS_MARCH_NATIVE)
             add_compile_options(-march=native)
