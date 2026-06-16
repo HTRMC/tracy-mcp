@@ -1,0 +1,7 @@
+{
+  "name": "tracy-mcp",
+  "version": "0.1.0",
+  "description": "Query Tracy .tracy captures: hotspots, zone stats, capture info, compare two captures.",
+  "author": { "name": "HTRMC" },
+  "keywords": ["tracy", "profiler", "performance", "mcp"]
+}

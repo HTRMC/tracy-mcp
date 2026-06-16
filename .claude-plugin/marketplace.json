@@ -1,0 +1,16 @@
+{
+  "name": "HTRMC",
+  "description": "HTRMC's Claude Code plugins",
+  "owner": {
+    "name": "HTRMC"
+  },
+  "plugins": [
+    {
+      "name": "tracy-mcp",
+      "description": "Query Tracy .tracy captures: hotspots, zone stats, capture info, compare two captures.",
+      "author": { "name": "HTRMC" },
+      "category": "development",
+      "source": "./plugin"
+    }
+  ]
+}

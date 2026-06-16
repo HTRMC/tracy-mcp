@@ -1,0 +1,67 @@
+# Build tracy-mcp per OS, attach the raw binary AND a one-click .mcpb bundle to
+# a GitHub Release. Triggered by pushing a tag like v0.1.0.
+#
+# NOTE: this has not been run yet -- validate on a test tag push. The mcpb pack
+# step and per-OS binary naming are the most likely things to need a tweak.
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            platform: linux
+            bin: tracy-mcp
+          - os: macos-latest
+            platform: darwin
+            bin: tracy-mcp
+          - os: windows-latest
+            platform: win32
+            bin: tracy-mcp.exe
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Configure
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DTRACY_MCP_PORTABLE=ON
+
+      - name: Build
+        run: cmake --build build --config Release
+
+      - name: Locate binary
+        id: bin
+        shell: bash
+        run: |
+          path=$(find build -maxdepth 3 -name '${{ matrix.bin }}' -type f | head -1)
+          echo "path=$path" >> "$GITHUB_OUTPUT"
+
+      - name: Pack .mcpb
+        shell: bash
+        run: |
+          mkdir -p stage/server
+          cp "${{ steps.bin.outputs.path }}" "stage/server/${{ matrix.bin }}"
+          sed -e "s/__BIN__/${{ matrix.bin }}/g" -e "s/__PLATFORM__/${{ matrix.platform }}/g" \
+            mcpb/manifest.json > stage/manifest.json
+          npx --yes @anthropic-ai/mcpb pack stage "tracy-mcp-${{ matrix.platform }}.mcpb"
+
+      - name: Rename raw binary
+        shell: bash
+        run: cp "${{ steps.bin.outputs.path }}" "tracy-mcp-${{ matrix.platform }}-${{ matrix.bin }}"
+
+      - name: Upload to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            tracy-mcp-${{ matrix.platform }}.mcpb
+            tracy-mcp-${{ matrix.platform }}-${{ matrix.bin }}

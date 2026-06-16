@@ -1,0 +1,26 @@
+{
+  "manifest_version": "0.3",
+  "name": "tracy-mcp",
+  "display_name": "Tracy MCP",
+  "version": "0.1.0",
+  "description": "Query Tracy .tracy captures: hotspots, zone stats, capture info, compare two captures.",
+  "author": { "name": "HTRMC" },
+  "server": {
+    "type": "binary",
+    "entry_point": "server/__BIN__",
+    "mcp_config": {
+      "command": "${__dirname}/server/__BIN__",
+      "args": []
+    }
+  },
+  "tools": [
+    { "name": "capture_info", "description": "Summary of a .tracy capture." },
+    { "name": "hotspots", "description": "Top zones by time." },
+    { "name": "zone", "description": "Stats for zones matching a name." },
+    { "name": "compare_captures", "description": "Diff zone times between two captures." }
+  ],
+  "compatibility": {
+    "claude_desktop": ">=0.10.0",
+    "platforms": ["__PLATFORM__"]
+  }
+}

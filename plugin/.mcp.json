@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "tracy": {
+      "command": "tracy-mcp",
+      "args": []
+    }
+  }
+}
