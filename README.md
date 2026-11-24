@@ -4,7 +4,7 @@ An [MCP](https://modelcontextprotocol.io) server that lets AI agents query
 [Tracy profiler](https://github.com/wolfpld/tracy) `.tracy` captures.
 
 Written in C++ and linked directly against Tracy's own server/`Worker` library
-(v0.13.1), so it reads captures with the exact same code the Tracy GUI uses - no
+(v0.14.1), so it reads captures with the exact same code the Tracy GUI uses - no
 binary-format reimplementation, no shelling out to CLI tools. Works with any MCP
 client: Claude Code, Codex, Cursor, etc.
 
@@ -84,5 +84,5 @@ pick the file.
 
 - Captures are cached in memory per path for the server's lifetime. Restart the
   server to pick up a re-capture written to the same path.
-- Built and tested against Tracy **0.13.1**. The `.tracy` format is versioned;
+- Built and tested against Tracy **0.14.1** (also reads 0.13.1 captures). The `.tracy` format is versioned;
   bump the `third_party/tracy` submodule to match your capture's version.

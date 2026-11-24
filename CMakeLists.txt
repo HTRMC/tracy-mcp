@@ -52,7 +52,9 @@ add_executable(tracy-mcp
 target_link_libraries(tracy-mcp PRIVATE TracyServer nlohmann_json::nlohmann_json)
 
 if(WIN32)
-    target_link_libraries(tracy-mcp PRIVATE ws2_32)
+    # secur32: TracySystem.cpp (Tracy >= 0.14) calls GetUserNameExA and asks for the library
+    # with #pragma comment(lib), which only MSVC honours.
+    target_link_libraries(tracy-mcp PRIVATE ws2_32 secur32)
 endif()
 if(MINGW)
     # Static-link the MinGW runtime so the binary runs without msys64 on PATH
