@@ -16,6 +16,8 @@ client: Claude Code, Codex, Cursor, etc.
 | `hotspots` | Top zones by total (or self) time. "What is slow?" |
 | `zone` | Stats for zones matching a name substring. |
 | `compare_captures` | Diff zone times between two captures. "What regressed?" |
+| `samples` | Top functions by call-stack samples, self or inclusive, optionally for one thread. "Where does the time outside my zones go?" Same numbers as the GUI's Statistics -> Sampling view. |
+| `frames` | Frame-time distribution (mean, median, p90, p99, max, frames over 16.7/33.3 ms) for the main frame set or a named one. |
 
 All tools take an absolute `path` to a `.tracy` file. Stats (mean/min/max/std,
 self-time) match `tracy-csvexport` exactly.
